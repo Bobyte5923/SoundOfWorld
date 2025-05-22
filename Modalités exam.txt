@@ -1,0 +1,11 @@
+
+Modalité de l’examen
+
+1. Introduction Java
+2. Introduction IHM: Swing(composants, conteneurs,
+layouts),[réflexion projet]
+3. Les évènements, [Cahier des charges]
+4. Boites de dialogues, [Projets]
+5. MVC, [Projets]
+6. Composants complexes, [Projets]
+7. Présentations
