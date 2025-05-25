@@ -1,4 +1,3 @@
-// MainWindow.java
 package view;
 
 import controller.GameController;
@@ -8,32 +7,29 @@ import javax.swing.*;
 import model.Instrument;
 
 public class MainWindow extends JFrame {
-    private GameController controller;
+    private GameController controller; // Game logic handler
 
     public MainWindow() {
-        super("Sound of World - Guess the Instrument");
-        setSize(900, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        super("Sound of World - Guess the Instrument"); // Set window title
+        setSize(900, 600); // Define initial window size
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Close application on exit
+        setLocationRelativeTo(null); // Center the window
+        setLayout(new BorderLayout()); // Use BorderLayout
 
-        controller = new GameController(this);
+        controller = new GameController(this); // Instantiate controller with this window
 
-        // Load 6 random instruments for this session
-        List<Instrument> randomInstruments = controller.getRandomInstruments(6);
-        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 10, 10));
+        List<Instrument> randomInstruments = controller.getRandomInstruments(6); // Choose 6 instruments randomly
+        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 10, 10)); // Create a 2x3 grid
 
-        // Create one panel per instrument placeholder
         for (Instrument instrument : randomInstruments) {
-            gridPanel.add(controller.createGuessPanel(instrument));
+            gridPanel.add(controller.createGuessPanel(instrument)); // Add a panel per instrument
         }
 
-        add(gridPanel, BorderLayout.CENTER);
-        setVisible(true);
+        add(gridPanel, BorderLayout.CENTER); // Add to window center
+        setVisible(true); // Show the window
     }
 
-    // Used for showing user dialogs from other components
-    public void showMessage(String msg) {
+    public void showMessage(String msg) { // Display a message dialog
         JOptionPane.showMessageDialog(this, msg);
     }
-} 
+}

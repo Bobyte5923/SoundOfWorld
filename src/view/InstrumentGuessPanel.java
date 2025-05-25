@@ -10,74 +10,63 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import model.Instrument;
 
-public class InstrumentGuessPanel extends JPanel {
-    private final Instrument instrument;
-    private final GameController controller;
+public class InstrumentGuessPanel extends JPanel { // GUI component for a single instrument guessing block
+    private final Instrument instrument; // The instrument to guess
+    private final GameController controller; // Reference to controller to trigger game logic
 
-    private final JButton playButton = new JButton("Play Sound");
-    private final JTextField guessField = new JTextField();
-    private final JPanel imagePanel = new JPanel();
+    private final JButton playButton = new JButton("Play Sound"); // Button to play the sound
+    private final JTextField guessField = new JTextField(); // Input field for user guesses
+    private final JPanel imagePanel = new JPanel(); // Area to display image after correct guess
 
-    private boolean alreadyAnswered = false;
+    private boolean alreadyAnswered = false; // Prevents multiple submissions
 
     public InstrumentGuessPanel(Instrument instrument, GameController controller) {
         this.instrument = instrument;
         this.controller = controller;
 
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setLayout(new BorderLayout()); // Set layout to border layout
+        setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Add visual border
 
-        // Button at the top to play the sound of the instrument
-        playButton.addActionListener(e -> controller.playSound(instrument));
+        playButton.addActionListener(e -> controller.playSound(instrument)); // Hook up sound playback
         add(playButton, BorderLayout.NORTH);
 
-        // Center area where the image will be shown if answer is correct
-        imagePanel.setBackground(Color.LIGHT_GRAY);
+        imagePanel.setBackground(Color.LIGHT_GRAY); // Placeholder background
         add(imagePanel, BorderLayout.CENTER);
 
-        // Input field for user to type the guessed instrument name
-        guessField.addActionListener(new GuessHandler());
+        guessField.addActionListener(new GuessHandler()); // Handle user submissions
         add(guessField, BorderLayout.SOUTH);
     }
 
-    // Handle guess when user presses Enter
-    private class GuessHandler implements ActionListener {
+    private class GuessHandler implements ActionListener { // Handles when user presses Enter
         @Override
         public void actionPerformed(ActionEvent e) {
             if (alreadyAnswered) return;
 
             String userInput = guessField.getText().trim();
 
-            // Check if guess is correct
             if (controller.checkAnswer(userInput, instrument)) {
-                showCorrect();
+                showCorrect(); // If correct, display image
             } else {
-                showIncorrect();
+                showIncorrect(); // If incorrect, show red background
             }
         }
     }
 
-    // Display image if the user guessed correctly
-    private void showCorrect() {
-        // Run image update safely in Swing thread
+    private void showCorrect() { // Loads and displays the instrument image
         SwingUtilities.invokeLater(() -> {
             try {
-                // Load image using absolute file path from project structure
                 File file = new File("resources" + instrument.getImagePath().replace("/resources", ""));
                 if (!file.exists()) {
                     throw new IOException("Image not found: " + file.getAbsolutePath());
                 }
 
-                // Load and scale the image
                 Image image = ImageIO.read(file);
                 JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 
-                // Clear and display image
                 imagePanel.removeAll();
                 imagePanel.add(label);
                 imagePanel.setBackground(Color.WHITE);
 
-                // Lock input and sound after success
                 guessField.setEnabled(false);
                 playButton.setEnabled(false);
                 alreadyAnswered = true;
@@ -90,8 +79,7 @@ public class InstrumentGuessPanel extends JPanel {
         });
     }
 
-    // Mark the panel in red for wrong answer
-    private void showIncorrect() {
+    private void showIncorrect() { // Red background to signal a wrong answer
         imagePanel.removeAll();
         imagePanel.setBackground(Color.RED);
         revalidate();
