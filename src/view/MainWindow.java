@@ -1,3 +1,4 @@
+// MainWindow.java
 package view;
 
 import controller.GameController;
@@ -10,26 +11,29 @@ public class MainWindow extends JFrame {
     private GameController controller;
 
     public MainWindow() {
-        super("Sound of World");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        super("Sound of World - Guess the Instrument");
+        setSize(900, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         controller = new GameController(this);
-        initUI();
+
+        // Load 6 random instruments for this session
+        List<Instrument> randomInstruments = controller.getRandomInstruments(6);
+        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 10, 10));
+
+        // Create one panel per instrument placeholder
+        for (Instrument instrument : randomInstruments) {
+            gridPanel.add(controller.createGuessPanel(instrument));
+        }
+
+        add(gridPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    private void initUI() {
-        JPanel instrumentGrid = new JPanel(new GridLayout(2, 3, 10, 10));
-        List<Instrument> instruments = controller.loadInstruments();
-
-        for (Instrument instrument : instruments) {
-            instrumentGrid.add(new InstrumentPanel(instrument, controller));
-        }
-
-        JScrollPane scrollPane = new JScrollPane(instrumentGrid);
-        add(scrollPane, BorderLayout.CENTER);
+    // Used for showing user dialogs from other components
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
-}
+} 
