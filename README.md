@@ -20,13 +20,20 @@ Elle est développée avec Java Swing selon le modèle **MVC** (Modèle-Vue-Cont
 
 ## Architecture MVC
 
-| Composant                            | Rôle                                                                 |
-|-------------------------------------|----------------------------------------------------------------------|
-| `Main.java`                         | Point d'entrée, lance la fenêtre principale                         |
-| `model/Instrument.java`             | Représente un instrument (nom, image, son)                          |
-| `view/MainWindow.java`              | Fenêtre principale Swing                                            |
-| `view/InstrumentGuessPanel.java`    | Panneau interactif pour chaque instrument à deviner                 |
-| `controller/GameController.java`    | Logique du jeu : lecture audio, validation, sélection aléatoire     |
+
+Modèle (package model ) : contient la classe Instrument qui représente un instrument de
+musique avec son nom et les chemins vers ses ressources (image et fichier son).
+
+Contrôleur (package controller ) : contient la classe GameController qui gère la logique
+du jeu (chargement des instruments, sélection aléatoire, lecture des sons, vérification des réponses) et fait le lien entre les données et l'interface graphique.
+
+Vue / Interface graphique (package view ) : contient la classe MainWindow (fenêtre
+principale de l'application) et la classe InstrumentGuessPanel (panneau individuel pour
+deviner un instrument). Ces classes s'occupent de la disposition à l’écran des composants, de la capture des actions de l'utilisateur et de l'affichage des résultats (images, messages).
+
+
+Point d'entrée (package main ) : contient la classe Main avec la méthode main() qui lance
+l'application.
 
 ---
 

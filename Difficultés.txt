@@ -1,0 +1,18 @@
+Lecture audio impossible (UnsupportedAudioFileException)
+•	Cause : Les fichiers .wav étaient encodés en 24-bit PCM, un format non supporté par javax.sound.sampled.
+•	Solution : Tous les sons ont été convertis en 16-bit PCM via ffmpeg pour assurer compatibilité Java.
+________________________________________
+
+Images non affichées (null URL, File not found)
+•	Cause : Mauvaise gestion du chemin d’accès (getResource(...) inadapté au lancement local).
+•	Solution : Copie du dossier images/sons a la sources.
+________________________________________
+
+Plusieurs sons joués en parallèle
+•	Cause : Aucun contrôle du Clip en cours → chevauchement des sons.
+•	Solution : Vérification via currentClip.isRunning() avant d’autoriser la lecture d’un nouveau son.
+________________________________________________________________________________
+
+Réponse correcte, mais image absente (bug d’état)
+•	Cause : Les modifications UI n’étaient pas dans le thread Swing (EDT), entraînant des comportements erratiques.
+•	Solution : Ajout de SwingUtilities.invokeLater(...) pour encapsuler toute mise à jour graphique.
