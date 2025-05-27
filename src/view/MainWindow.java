@@ -1,3 +1,4 @@
+// Classes handle the on-screen layout of components, capturing user actions, and displaying results (the main application window).
 package view;
 
 import controller.GameController;

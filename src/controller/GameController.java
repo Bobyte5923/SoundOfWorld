@@ -1,3 +1,4 @@
+// Manages the game logic (loading instruments, random selection, playing sounds, checking answers) and links the data to the graphical interface.
 package controller;
 
 import java.net.URL; // Used for resource path resolution

@@ -1,7 +1,7 @@
+// Classes handle the on-screen layout of components, capturing user actions, and displaying results (individual panel for guessing an instrument).
 package view;
 
 import controller.GameController;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

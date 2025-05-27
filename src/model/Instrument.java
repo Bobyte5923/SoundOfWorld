@@ -1,3 +1,4 @@
+// Represents a musical instrument with its name and the paths to its resources (image and sound file)
 package model;
 
 import java.util.Objects;
