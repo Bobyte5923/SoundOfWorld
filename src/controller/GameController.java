@@ -26,7 +26,7 @@ public class GameController {
         list.add(new Instrument("Batterie", "/resources/images/Batterie.jpg", "/resources/sounds/Batterie.wav"));
         list.add(new Instrument("Violon", "/resources/images/Violon.jpg", "/resources/sounds/Violon.wav"));
         list.add(new Instrument("Saxophone", "/resources/images/Saxophone.jpg", "/resources/sounds/Saxophone.wav"));
-        list.add(new Instrument("Flûte", "/resources/images/Flute.jpg", "/resources/sounds/Flute.wav"));
+        list.add(new Instrument("Flute", "/resources/images/Flute.jpg", "/resources/sounds/Flute.wav"));
         list.add(new Instrument("Djembe", "/resources/images/Djembe.jpg", "/resources/sounds/Djembe.wav"));
         list.add(new Instrument("Accordeon", "/resources/images/Accordeon.jpg", "/resources/sounds/Accordeon.wav"));
         list.add(new Instrument("Grelots", "/resources/images/Grelots.jpg", "/resources/sounds/Grelots.wav"));
