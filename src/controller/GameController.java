@@ -6,13 +6,20 @@ import java.util.*; // Provides List, ArrayList, Collections
 import javax.sound.sampled.*; // For playing audio clips
 import javax.swing.*; // For Swing GUI components
 import model.Instrument; // Data model representing an instrument
-import view.InstrumentGuessPanel; // GUI component for guessing
-import view.MainWindow; // Main application window
+import view.GameMenuBar; // GUI component for guessing
+import view.InstrumentGuessPanel; // Main application window
+import view.MainWindow; // Menu bar for game controls
 
 public class GameController { 
+
     private final MainWindow window; // Reference to the main window for displaying messages
     private final List<Instrument> allInstruments; // Complete list of available instruments
     private Clip currentClip = null; // Currently playing audio clip
+
+    private int lives = 3;
+    private GameMenuBar menuBar;
+
+    private Set<Instrument> instrumentsRestants;// Set to keep track of remaining instruments to guess
 
     public GameController(MainWindow window) { // Constructor initializing game controller with window
         this.window = window;
@@ -26,7 +33,7 @@ public class GameController {
         list.add(new Instrument("Batterie", "/resources/images/Batterie.jpg", "/resources/sounds/Batterie.wav"));
         list.add(new Instrument("Violon", "/resources/images/Violon.jpg", "/resources/sounds/Violon.wav"));
         list.add(new Instrument("Saxophone", "/resources/images/Saxophone.jpg", "/resources/sounds/Saxophone.wav"));
-        list.add(new Instrument("Flûte", "/resources/images/Flute.jpg", "/resources/sounds/Flute.wav"));
+        list.add(new Instrument("Flute", "/resources/images/Flute.jpg", "/resources/sounds/Flute.wav"));
         list.add(new Instrument("Djembe", "/resources/images/Djembe.jpg", "/resources/sounds/Djembe.wav"));
         list.add(new Instrument("Accordeon", "/resources/images/Accordeon.jpg", "/resources/sounds/Accordeon.wav"));
         list.add(new Instrument("Grelots", "/resources/images/Grelots.jpg", "/resources/sounds/Grelots.wav"));
@@ -42,10 +49,25 @@ public class GameController {
         return list;
     }
 
+    public void resetGame() { // Reset the game state to start a new game
+        lives = 3;
+        updateLivesDisplay();
+
+        List<Instrument> nouveaux = getRandomInstruments(6);
+        instrumentsRestants = new HashSet<>(nouveaux);
+
+        window.displayInstrumentsgrid(); // Reset the game UI with new instruments
+    
+    } 
+
     public List<Instrument> getRandomInstruments(int n) { // Randomly select n instruments
         List<Instrument> copy = new ArrayList<>(allInstruments);
         Collections.shuffle(copy); // Shuffle to ensure randomness
         return copy.subList(0, Math.min(n, copy.size()));
+    }
+
+    public List<Instrument> getInstrumentsRestants() { // Accessor for remaining instruments to guess
+        return new ArrayList<>(instrumentsRestants);
     }
 
     public JPanel createGuessPanel(Instrument instrument) { // Create a new guessing panel for an instrument
@@ -71,11 +93,83 @@ public class GameController {
         }
     }
 
-    public boolean checkAnswer(String input, Instrument instrument) { // Compare user input to the correct instrument name
-        return instrument.getName().equalsIgnoreCase(input.trim());
+
+    public boolean checkAnswer(String input, Instrument instrument) {
+    boolean correct = instrument.getName().equalsIgnoreCase(input.trim());
+
+        if (correct) {
+            // DEBUG: Affiche ce qu'on essaie de supprimer
+            System.out.println(">> Tentative de suppression : " + instrument.getName());
+
+            // DEBUG: Affiche les éléments AVANT suppression
+            System.out.println(">> Instruments restants AVANT suppression :");
+            for (Instrument i : instrumentsRestants) {
+                System.out.println("   - " + i.getName());
+            }
+
+            // Tente de retirer l'instrument
+            boolean removed = instrumentsRestants.remove(instrument);
+
+            // DEBUG: Résultat de la suppression
+            System.out.println(">> Suppression réussie ? " + removed);
+            System.out.println(">> Instruments restants APRÈS : " + instrumentsRestants.size());
+
+            // Affiche les éléments APRÈS suppression
+            for (Instrument i : instrumentsRestants) {
+                System.out.println("   - " + i.getName());
+            }
+
+            // Victoire ?
+            if (instrumentsRestants.isEmpty()) {
+                window.showVictoryDialog();
+            }
+        } else {
+            lives--;
+            updateLivesDisplay();
+            if (lives <= 0) {
+                window.showGameOverDialog();
+            }
+        }
+        return correct;
     }
+
+    /*public boolean checkAnswer(String input, Instrument instrument) { // Compare user input to the correct instrument name --> if not matches, decrement lives
+        
+        boolean correct = instrument.getName().equalsIgnoreCase(input.trim());
+
+        if (correct) {
+            System.out.println(">> Tentative de suppression : " + instrument.getName());
+
+            instrumentsRestants.remove(instrument);
+            System.out.println("Restants: " + instrumentsRestants.size());
+
+            if (instrumentsRestants.isEmpty()) {
+                window.showVictoryDialog(); // Show victory dialog if all instruments guessed
+            }
+        } else {
+            lives--;
+            updateLivesDisplay();
+            if (lives <= 0) {
+                window.showGameOverDialog();
+            }
+        }
+        return correct;
+    } //Am modifié
+     */
 
     public MainWindow getWindow() { // Accessor for main window (for messaging)
         return window;
     }
+    
+    public void setMenuBar(GameMenuBar menuBar) { // Set the menu bar for the game controller
+        this.menuBar = menuBar;
+        updateLivesDisplay();
+    }
+
+    private void updateLivesDisplay() { // Update the lives display in the menu bar
+        if (menuBar != null) {
+            menuBar.setLives(lives);
+        }
+    }
+    
 }
