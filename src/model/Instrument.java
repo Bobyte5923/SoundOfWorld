@@ -1,8 +1,6 @@
 // Represents a musical instrument with its name and the paths to its resources (image and sound file)
 package model;
 
-import java.util.Objects;
-
 public class Instrument { 
     private final String name; // Instrument name (used for matching answers)
     private final String imagePath; // Path to the instrument's image
@@ -33,10 +31,5 @@ public class Instrument {
         if (!(o instanceof Instrument)) return false;
         Instrument that = (Instrument) o;
         return name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() { // Hash code based on name
-        return Objects.hash(name);
     }
 }
