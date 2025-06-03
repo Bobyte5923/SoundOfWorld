@@ -67,6 +67,5 @@ Encadré par : Professeur-e HES Madame Rizzotti-Kaddouri
 ## Ressources
 Code et questions https://stackoverflow.com
 Informations fonction J https://docs.oracle.com
-Explication et debug ultine https://chatgpt.com
 Les sons https://freesound.org/
 Les images https://images.google.com/
