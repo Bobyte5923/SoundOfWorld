@@ -1,8 +1,13 @@
-package main; // Package declaration
-import view.MainWindow; // Importing the MainWindow class from the view package
+package main;
 
-public class Main { 
-    public static void main(String[] args) { // Entry point of the Java application
-        javax.swing.SwingUtilities.invokeLater(() -> new MainWindow()); // Ensures GUI updates are performed on the Event Dispatch Thread
+import javax.swing.SwingUtilities;
+import view.MainWindow;
+
+/**
+ * Entry point of the application. Starts the GUI.
+ */
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MainWindow().setVisible(true));
     }
 }

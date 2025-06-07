@@ -1,35 +1,28 @@
-// Represents a musical instrument with its name and the paths to its resources (image and sound file)
 package model;
 
-public class Instrument { 
-    private final String name; // Instrument name (used for matching answers)
-    private final String imagePath; // Path to the instrument's image
-    private final String soundPath; // Path to the instrument's audio file
+/**
+ * Represents a musical instrument with a name, image path, and audio path.
+ */
+public class Instrument {
+    private final String nom;         // Instrument name
+    private final String imagePath;   // Path to image (.jpg)
+    private final String audioPath;   // Path to sound (.wav)
 
-    public Instrument(String name, String imagePath, String soundPath) { // Constructor
-        this.name = name;
+    public Instrument(String nom, String imagePath, String audioPath) {
+        this.nom = nom;
         this.imagePath = imagePath;
-        this.soundPath = soundPath;
+        this.audioPath = audioPath;
     }
 
-    public String getName() { return name; } // Getter for name
-    public String getImagePath() { return imagePath; } // Getter for image path
-    public String getSoundPath() { return soundPath; } // Getter for sound path
-
-    @Override
-    public String toString() { // Human-readable object representation
-        return "Instrument{" +
-                "name='" + name + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                ", soundPath='" + soundPath + '\'' +
-                '}';
+    public String getNom() {
+        return nom;
     }
 
-    @Override
-    public boolean equals(Object o) { // Equality based on name only
-        if (this == o) return true;
-        if (!(o instanceof Instrument)) return false;
-        Instrument that = (Instrument) o;
-        return name.equals(that.name);
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getAudioPath() {
+        return audioPath;
     }
 }

@@ -1,4 +1,3 @@
-// Classes handle the on-screen layout of components, capturing user actions, and displaying results (the main application window).
 package view;
 
 import controller.GameController;
@@ -7,30 +6,39 @@ import java.util.List;
 import javax.swing.*;
 import model.Instrument;
 
+/**
+ * The main application window that initializes and displays all instrument guess panels.
+ */
 public class MainWindow extends JFrame {
-    private GameController controller; // Game logic handler
+    private final GameController controller;
 
     public MainWindow() {
-        super("Sound of World - Guess the Instrument"); // Set window title
-        setSize(900, 600); // Define initial window size
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // Close application on exit
-        setLocationRelativeTo(null); // Center the window
-        setLayout(new BorderLayout()); // Use BorderLayout
+        super("Sound of World - Guess the Instrument");
+        setSize(900, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        controller = new GameController(this); // Instantiate controller with this window
+        controller = new GameController(this);
 
-        List<Instrument> randomInstruments = controller.getRandomInstruments(6); // Choose 6 instruments randomly
-        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 10, 10)); // Create a 2x3 grid
+        List<Instrument> instruments = controller.getRandomInstruments(6);
+        JPanel grid = new JPanel(new GridLayout(2, 3, 10, 10));
 
-        for (Instrument instrument : randomInstruments) {
-            gridPanel.add(controller.createGuessPanel(instrument)); // Add a panel per instrument
+        for (Instrument inst : instruments) {
+            grid.add(new InstrumentGuessPanel(inst, controller));
         }
 
-        add(gridPanel, BorderLayout.CENTER); // Add to window center
-        setVisible(true); // Show the window
+        add(grid, BorderLayout.CENTER);
+        setVisible(true);
     }
 
-    public void showMessage(String msg) { // Display a message dialog
-        JOptionPane.showMessageDialog(this, msg);
+    // Display the victory screen when the game is completed
+    public void showVictoryScreen() {
+        getContentPane().removeAll();
+        JLabel victory = new JLabel(new ImageIcon("resources/images/victory.jpg"));
+        victory.setHorizontalAlignment(SwingConstants.CENTER);
+        add(victory, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 }
