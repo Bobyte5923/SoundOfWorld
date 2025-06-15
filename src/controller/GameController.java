@@ -17,21 +17,19 @@ import view.MainWindow;
 public class GameController {
     private final List<Instrument> allInstruments;
     private List<Instrument> currentGameInstruments;
-    //Am ajout allInstruments et currentGameInstruments
     private List<Instrument> remainingInstruments;     // Instruments left to guess
     private final MainWindow window;               // Reference to main UI
     private Clip currentClip = null;                   // Only one sound plays at a time
 
     private int lives = 10;
     private GameMenuBar menuBar;
-    //Am ajout: GameMenuBar et lives
 
     public GameController(MainWindow window) {
         this.window = window;
         this.allInstruments = loadInstruments();
         this.currentGameInstruments = new ArrayList<>();
         this.remainingInstruments = new ArrayList<>();
-        //Am ajout: this.currentGameInstruments et this.remainingInstruments
+
     }
 
     // Load instrument files from resources/images and resources/sounds
@@ -65,7 +63,7 @@ public class GameController {
 
         window.displayInstrumentGrid(); // Reset the game UI with new instruments
     
-    } //Am ajout
+    }
 
     public List<Instrument> getCurrentGameInstruments() {
         return new ArrayList<>(currentGameInstruments);
@@ -73,12 +71,12 @@ public class GameController {
 
     public List<Instrument> getRemainingInstruments() { // Accessor for remaining instruments to guess
         return new ArrayList<>(remainingInstruments);
-    } //Am ajout
+    }
     
     // Pick N random instruments
     public List<Instrument> getRandomInstruments(int count) {
         return new ArrayList<>(currentGameInstruments);
-    } //Am modification
+    } 
 
 
     // Exclusive audio playback
@@ -98,8 +96,6 @@ public class GameController {
         }
     }
 
-    //Am ajout: suppression du markInstrumentAsGuessed
-
 private void checkAnswer() {
     if (alreadyAnswered) return;
 
@@ -112,7 +108,6 @@ private void checkAnswer() {
         guessField.setEditable(false);
         playButton.setEnabled(false);
         alreadyAnswered = true;
-        // Supprimé: controller.markInstrumentAsGuessed(instrument);
         
     } else {
         setBackground(Color.RED);
@@ -125,20 +120,14 @@ private void checkAnswer() {
         System.out.println("DEBUG: checkAnswer appelé avec '" + input + "' pour " + instrument.getName() + " -> " + correct);
 
         if (correct) {
-            // DEBUG: Affiche ce qu'on essaie de supprimer
-            System.out.println(">> Tentative de suppression : " + instrument.getName());
-            System.out.println(">> Instruments restants AVANT suppression : " + remainingInstruments.size());
-
+            
             // Tente de retirer l'instrument
             boolean removed = remainingInstruments.removeIf(i -> i.getName().equalsIgnoreCase(instrument.getName()));
             
-            System.out.println(">> Suppression réussie ? " + removed);
-            System.out.println(">> Instruments restants APRÈS : " + remainingInstruments.size());
 
             // IMPORTANT: Vérifier la victoire IMMÉDIATEMENT après la suppression
             if (remainingInstruments.isEmpty()) {
-                System.out.println(">> VICTOIRE DÉTECTÉE ! Affichage du dialog...");
-                // Utiliser SwingUtilities.invokeLater pour s'assurer que le dialog s'affiche après la mise à jour de l'UI
+               
                 SwingUtilities.invokeLater(() -> {
                     window.showVictoryDialog();
                 });
@@ -146,16 +135,15 @@ private void checkAnswer() {
         } else {
             lives--;
             updateLivesDisplay();
-            System.out.println(">> Vies restantes : " + lives);
+        
             if (lives <= 0) {
-                System.out.println(">> GAME OVER détecté !");
                 SwingUtilities.invokeLater(() -> {
                     window.showGameOverDialog();
                 });
             }
         }
         return correct;
-    } //Am ajout
+    } 
     
 
     public MainWindow getWindow() {
@@ -165,13 +153,13 @@ private void checkAnswer() {
     public void setMenuBar(GameMenuBar menuBar) { // Set the menu bar for the game controller
         this.menuBar = menuBar;
         updateLivesDisplay();
-    } //Am ajout
+    }
 
     private void updateLivesDisplay() { // Update the lives display in the menu bar
         if (menuBar != null) {
             menuBar.setLives(lives);
         }
-    } // Am ajout
+    }
 
     // Get all instrument names (from code 1)
     public List<String> getAllInstrumentNames() {
@@ -180,5 +168,5 @@ private void checkAnswer() {
             names.add(inst.getName());
         }
         return names;
-    } //Am ajout
+    }
 }
