@@ -14,7 +14,7 @@ public class Instrument {
         this.audioPath = audioPath;
     }
 
-    public String getNom() {
+    public String getName() {
         return nom;
     }
 

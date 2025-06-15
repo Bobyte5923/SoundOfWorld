@@ -47,14 +47,19 @@ public class InstrumentGuessPanel extends JPanel {
         if (alreadyAnswered) return;
 
         String guess = guessField.getText().trim();
-        if (guess.equalsIgnoreCase(instrument.getNom())) {
+        System.out.println("DEBUG: Vérification de la réponse: '" + guess + "' pour " + instrument.getName());
+        
+        boolean correct = controller.checkAnswer(guess, instrument);
+        
+        if (correct) {
+            System.out.println("DEBUG: Réponse correcte pour " + instrument.getName());
             showImage();
             setBackground(UIManager.getColor("Panel.background")); // Reset red if previously wrong
             guessField.setEditable(false);
             playButton.setEnabled(false);
             alreadyAnswered = true;
-            controller.markInstrumentAsGuessed(instrument);
         } else {
+            System.out.println("DEBUG: Réponse incorrecte pour " + instrument.getName());
             setBackground(Color.RED);
         }
     }
