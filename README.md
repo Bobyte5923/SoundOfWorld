@@ -14,7 +14,7 @@ Elle est développée avec Java Swing selon le modèle **MVC** (Modèle-Vue-Cont
 - Il peut cliquer pour écouter un instrument.
 - Il doit deviner le nom de l'instrument (ex. `Piano`, `Guitare`, `Harpe`).
 - Si la réponse est bonne : l'image de l'instrument s'affiche.
-- Si elle est fausse : la case devient **rouge**.
+- Si elle est fausse : la case devient **rouge** et il perd 1 point.
 
 ---
 
@@ -29,7 +29,7 @@ du jeu (chargement des instruments, sélection aléatoire, lecture des sons, vé
 
 Vue / Interface graphique (package view ) : contient la classe MainWindow (fenêtre
 principale de l'application) et la classe InstrumentGuessPanel (panneau individuel pour
-deviner un instrument). Ces classes s'occupent de la disposition à l’écran des composants, de la capture des actions de l'utilisateur et de l'affichage des résultats (images, messages).
+deviner un instrument). InstrumentListPanel ???? et GameMenuBar ???? Ces classes s'occupent de la disposition à l’écran des composants, de la capture des actions de l'utilisateur et de l'affichage des résultats (images, messages).
 
 
 Point d'entrée (package main ) : contient la classe Main avec la méthode main() qui lance
