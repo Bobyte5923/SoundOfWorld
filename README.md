@@ -64,7 +64,7 @@ Demarrer une console puis :
 
 ## Auteurs
 Amandine & Ayman  
-Encadré par : Professeur-e HES Madame Rizzotti-Kaddouri  
+Encadré par : Professeure HES Madame Rizzotti-Kaddouri  
 
 ## Ressources
 Code et questions https://stackoverflow.com
