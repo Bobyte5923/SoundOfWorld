@@ -4,21 +4,32 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import javax.sound.sampled.*;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import model.Instrument;
+import view.GameMenuBar;
 import view.MainWindow;
 
 /**
  * GameController manages instrument selection, game progress, and sound playback.
  */
 public class GameController {
-    private List<Instrument> instruments;              // All instruments
+    private final List<Instrument> allInstruments;
+    private List<Instrument> currentGameInstruments;
     private List<Instrument> remainingInstruments;     // Instruments left to guess
-    private final MainWindow mainWindow;               // Reference to main UI
+    private final MainWindow window;               // Reference to main UI
     private Clip currentClip = null;                   // Only one sound plays at a time
 
-    public GameController(MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
-        this.instruments = loadInstruments();
+    private int lives = 10;
+    private GameMenuBar menuBar;
+
+    public GameController(MainWindow window) {
+        this.window = window;
+        this.allInstruments = loadInstruments();
+        this.currentGameInstruments = new ArrayList<>();
+        this.remainingInstruments = new ArrayList<>();
+
     }
 
     // Load instrument files from resources/images and resources/sounds
@@ -40,23 +51,33 @@ public class GameController {
         return list;
     }
 
-    // Pick N random instruments
-    public List<Instrument> getRandomInstruments(int count) {
-        if (instruments.size() < count) {
-            throw new IllegalStateException("Not enough instruments available.");
-        }
-        Collections.shuffle(instruments);
-        remainingInstruments = new ArrayList<>(instruments.subList(0, count));
-        return new ArrayList<>(remainingInstruments);
+    public void resetGame() { // Reset the game state to start a new game
+        lives = 10;
+        updateLivesDisplay();
+
+        List<Instrument> shuffled = new ArrayList<>(allInstruments);
+        Collections.shuffle(shuffled);
+        
+        currentGameInstruments = new ArrayList<>(shuffled.subList(0, 6));
+        remainingInstruments = new ArrayList<>(currentGameInstruments);
+
+        window.displayInstrumentGrid(); // Reset the game UI with new instruments
+    
     }
 
-    // Mark guessed instrument and trigger end if all guessed
-    public void markInstrumentAsGuessed(Instrument instrument) {
-        remainingInstruments.remove(instrument);
-        if (remainingInstruments.isEmpty()) {
-            mainWindow.showVictoryScreen();
-        }
+    public List<Instrument> getCurrentGameInstruments() {
+        return new ArrayList<>(currentGameInstruments);
     }
+
+    public List<Instrument> getRemainingInstruments() { // Accessor for remaining instruments to guess
+        return new ArrayList<>(remainingInstruments);
+    }
+    
+    // Pick N random instruments
+    public List<Instrument> getRandomInstruments(int count) {
+        return new ArrayList<>(currentGameInstruments);
+    } 
+
 
     // Exclusive audio playback
     public void playSound(String audioPath) {
@@ -73,5 +94,78 @@ public class GameController {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
+
+private void checkAnswer() {
+    if (alreadyAnswered) return;
+
+    String guess = guessField.getText().trim();
+    boolean correct = controller.checkAnswer(guess, instrument);
+    
+    if (correct) {
+        showImage();
+        setBackground(UIManager.getColor("Panel.background")); // Reset red if previously wrong
+        guessField.setEditable(false);
+        playButton.setEnabled(false);
+        alreadyAnswered = true;
+        
+    } else {
+        setBackground(Color.RED);
+    }
+}
+
+    public boolean checkAnswer(String input, Instrument instrument) {
+        boolean correct = instrument.getName().equalsIgnoreCase(input.trim());
+        
+        System.out.println("DEBUG: checkAnswer appelé avec '" + input + "' pour " + instrument.getName() + " -> " + correct);
+
+        if (correct) {
+            
+            
+            boolean removed = remainingInstruments.removeIf(i -> i.getName().equalsIgnoreCase(instrument.getName()));
+            
+
+            if (remainingInstruments.isEmpty()) {
+               
+                SwingUtilities.invokeLater(() -> {
+                    window.showVictoryDialog();
+                });
+            }
+        } else {
+            lives--;
+            updateLivesDisplay();
+        
+            if (lives <= 0) {
+                SwingUtilities.invokeLater(() -> {
+                    window.showGameOverDialog();
+                });
+            }
+        }
+        return correct;
+    } 
+    
+
+    public MainWindow getWindow() {
+        return window;
+    }
+
+    public void setMenuBar(GameMenuBar menuBar) { // Set the menu bar for the game controller
+        this.menuBar = menuBar;
+        updateLivesDisplay();
+    }
+
+    private void updateLivesDisplay() { // Update the lives display in the menu bar
+        if (menuBar != null) {
+            menuBar.setLives(lives);
+        }
+    }
+
+    // Get all instrument names
+    public List<String> getAllInstrumentNames() {
+        List<String> names = new ArrayList<>();
+        for (Instrument inst : allInstruments) {
+            names.add(inst.getName());
+        }
+        return names;
     }
 }

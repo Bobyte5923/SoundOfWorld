@@ -54,8 +54,10 @@ javac -d bin -sourcepath src src/main/Main.java
 ```
 
 ### Exécution
-```bash
-java -cp bin main.Main
+
+Demarrer une console puis :
+
+```$ ./build_and_run.sh
 ```
 
 ---

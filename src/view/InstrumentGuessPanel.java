@@ -47,13 +47,15 @@ public class InstrumentGuessPanel extends JPanel {
         if (alreadyAnswered) return;
 
         String guess = guessField.getText().trim();
-        if (guess.equalsIgnoreCase(instrument.getNom())) {
+        
+        boolean correct = controller.checkAnswer(guess, instrument);
+        
+        if (correct) {
             showImage();
             setBackground(UIManager.getColor("Panel.background")); // Reset red if previously wrong
             guessField.setEditable(false);
             playButton.setEnabled(false);
             alreadyAnswered = true;
-            controller.markInstrumentAsGuessed(instrument);
         } else {
             setBackground(Color.RED);
         }
