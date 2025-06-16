@@ -27,9 +27,8 @@ musique avec son nom et les chemins vers ses ressources (image et fichier son).
 Contrôleur (package controller ) : contient la classe GameController qui gère la logique
 du jeu (chargement des instruments, sélection aléatoire, lecture des sons, vérification des réponses) et fait le lien entre les données et l'interface graphique.
 
-Vue / Interface graphique (package view ) : contient la classe MainWindow (fenêtre
-principale de l'application) et la classe InstrumentGuessPanel (panneau individuel pour
-deviner un instrument). InstrumentListPanel ???? et GameMenuBar ???? Ces classes s'occupent de la disposition à l’écran des composants, de la capture des actions de l'utilisateur et de l'affichage des résultats (images, messages).
+Vue / Interface graphique (package view ) : contient la classe MainWindow (fenêtre principale de l'application) et la classe InstrumentGuessPanel (panneau individuel pour deviner un instrument). InstrumentListPanel (Jliste de tout les instruments dans une barre latérale avec scroll dans un panneau titré "Instruments") et GameMenuBar (affiche le nombre de vies restantes et gère le bouton "Réinitialiser" pour relancer une partie). Ces classes s'occupent de la disposition à l’écran des composants, de la capture des actions de l'utilisateur et de l'affichage des résultats (images, messages).
+
 
 
 Point d'entrée (package main ) : contient la classe Main avec la méthode main() qui lance
