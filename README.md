@@ -15,6 +15,7 @@ Elle est développée avec Java Swing selon le modèle **MVC** (Modèle-Vue-Cont
 - Il doit deviner le nom de l'instrument (ex. `Piano`, `Guitare`, `Harpe`).
 - Si la réponse est bonne : l'image de l'instrument s'affiche.
 - Si elle est fausse : la case devient **rouge** et il perd 1 point.
+- Lorsque les 6 instruments sont trouvés, l'image de Clippy apparait.
 
 ---
 
